@@ -1,0 +1,49 @@
+---
+title: "Which moment do you feel most happy in the last 24h?"
+output: github_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot)
+library(tidytext)
+library(stringr)
+```
+
+## import data
+
+```{r}
+hm_raw = read_csv("./happydb/data/cleaned_hm.csv")
+skimr::skim(hm_raw)
+```
+## Data clean 
+```{r}
+## unnest tokens in a sentence in the clean_hm column 
+hm_raw %>% 
+  unnest_tokens(word, cleaned_hm)
+
+
+## feelings category in the dataframe: 7 summary statistics 
+hm_raw %>%
+ group_by(predicted_category) %>% 
+ mutate(category_counts = n()) %>% 
+ distinct(predicted_category, category_counts) %>% 
+ arrange(desc(category_counts))
+```
+* It seems that **when a gentle feeling of fondness or liking is generated** from an individual, people always feel they are happy at the moment most often.
+
+After using `unnest_tokens`, we’ve split each row so that there is one token (word) in each row of the new data frame; the default tokenization in `unnest_tokens()` is for single words, as shown here.
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
